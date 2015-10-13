@@ -18,19 +18,30 @@ import argparse
 import json
 
 parser = argparse.ArgumentParser(description='Set and Get AJA KUMO cross points.  On get success, the script returns the source.  On set success, the script returns the source and destination separated by a comma.  On failure, the script returns -1')
-parser.add_argument('-d','--get_xpt',dest='dest',metavar="CROSSPOINT",type=int,nargs=1,help="Get crosspoint source for destination",required=True)
+parser.add_argument('-d','--get_xpt',dest='dest',metavar="CROSSPOINT",type=int,nargs=1,help="Get crosspoint source for destination")
 parser.add_argument('-s','--set_xpt',dest='source',metavar="CROSSPOINT",type=int,nargs=1,help="Set crosspoint source for destination (defined by -d)")
-parser.add_argument('-a','--address',dest='kumo',metavar="ADDRESS",type=str,nargs=1,help="IP address or DNS name of KUMO",required=True)
+parser.add_argument('-a','--address',dest='kumo',metavar="ADDRESS",type=str,nargs=1,help="IP address or DNS name of KUMO")
 parser.add_argument('-e','--print_error',dest='err',action='store_true',default=False,help="Print out all error codes and exit")
 args = parser.parse_args()
 
-if args.err is True:
+def printError():
 	print "Error Codes:"
 	print ""
 	print "-1: can't connect to KUMO (check your URL or network)"
 	print "-2: destination out of range (not enough destinations in router)"
 	print "-3: source is out of range (not enough sources in router)"
 	print ""	
+	exit()
+
+if args.err is True:
+	printError()
+
+if args.dest is None:
+	print "No destination defined, exiting."
+	exit()
+
+if args.kumo is None:
+	print "No router defined, exiting."
 	exit()
 
 #set our kumo URL
